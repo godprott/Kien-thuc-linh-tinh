@@ -1,0 +1,11 @@
+đọc theo thứ tự:
+React.PureComponent và React.memo
+Các lỗi dễ mắc khiến việc sử dụng PureComponent, memo thành công cốc
+Tất tần tật về useMemo và useCallback
+
+Thế là đủ, nếu cần đọc thêm:
+Hãy sử dụng React.memo() một cách khôn ngoan
+
+Trước đây ta hiểu khi state thay đổi thì re-render lại toàn bộ thành dom ảo, rồi so sánh với cái dom từ trc, nếu có thay đổi thì re-paint lại thay đổi đó trong dom thật
+nhưng vấn đề là khi nó re-render lại dom ảo, là nó render toàn bộ lại component đó và tất cả các component con, => có 1 số cái component mình biết là nó sẽ ko đổi,
+nhưng máy vẫn re-render lại để làm so sánh => ảnh hưởng hiệu suất.

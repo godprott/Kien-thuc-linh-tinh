@@ -1,0 +1,31 @@
+bình thường khi server react trả page về client ta đã biết nó đưa 1 trang trắng html, và 1 file js chứa toàn bộ cả app ném về client cho nó tự xử lý.
+( hoặc là 1 trang html trắng và ném dần dần từng file nhỏ js cần thiết cho client nếu ta tối ưu hiệu suất )
+Điều này google ko cào dc, ta đã biết.
+
+với nextjs nó mặc định thường là các file page là static hết ( server next trả về 1 file HTML tĩnh và 1 file js tối thiểu ( thường chỉ chứa các event ) cho client )
+next vẫn dc tính là SPA, do các page của next ta có thể hiểu dc bao bởi 1 component app giống như react, khi đổi trang page khác thì app tháo page cũ thay vào page mới.
+Trc đây ta hiểu là thay component ( hay ở đây là page ) chỉ có thể khi DOM mới ở trong file js, việc tháo bỏ này dựa vào js dc xử lý ở client. Nhưng ở đây khi ta request page mới,
+server ko trả về 1 cục js chứa page mới, mà nó trả về 1 file HTML tĩnh ( chứa các DOM dc render ở server sẵn ) và 1 file js tối thiểu, sau đó hydrate vào component app
+( ta có thể hiểu hydrate ở đây là js tháo các DOM cũ thay bằng DOM trong file HTML tĩnh dc gửi tới, nó khác với js thay DOM cũ bằng DOM trong file js )
+
+Một điều thú vị nếu ta kiểm tra các file dc gửi tới client trong chrome devTool, thì khi trả về page mới vẫn là 1 cục js, nhưng nếu tắt JavaScript của Chrome đi ( Ctrl + Shift + P -> Disable JS )
+thì đúng là nó trả về 1 file HTML và 1 file js tối thiểu, chả hiểu sao =))
+
+-----------------
+Trong nextjs có 3 kiểu render:
+static (mặc định) : render sẵn ở server 1 trang HTML tĩnh tại thời điểm build app, ai request thì gửi trang này. ( có tùy chọn cập nhật lại page theo thời gian ở server )
+	 	    sử dụng getStaticProps() và getStaticPaths() nếu cần props và path.
+ssr: khi có request từ client thì server mới render HTML tĩnh trả về client. sử dụng getServerSideProps()
+csr: do mặc định là static page nên cái gì static dc thì nó sẽ tự static rồi gửi về client, còn cái gì ko static dc 
+     ( như fetch data từ api, hay dùng useEffect như bình thường ở reactjs ) thì nó sẽ gửi 1 cục js về client nó tự xử lý, server ko render dc cái này.
+
+ví dụ 1 page có 1 component con, page chứa <h1>abc</h1> còn component con chứa code fetch data api trong hàm useEffect().
+Khi đó <h1>abc</h1> trên page sẽ dc render trc là static, còn component kia phần useEffect() sẽ là do client tự chạy js lấy.
+Đây chính là csr ở nextjs.
+
+nếu ta muốn ssr phần fetch data trong trường hợp trên thì sao? ở page ta đành phải sử dụng getServerSideProps() ( hàm ko khả dụng ở component ) và get fetch data trong này,
+sau đó props xuống cho component con để hiển thị, khi đó toàn bộ là ssr.
+
+-------------------
+Check ssr hay csr bằng cách chuột phải và mở source code ra, nếu các tag ( như h1,... ) có chứa data => ssr, nếu ko là csr
+hoặc Disable JS đi xem có hiểu thị k

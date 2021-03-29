@@ -1,0 +1,55 @@
+Lớp express.Router có thể được sử dụng để tạo các trình xử lý tuyến có thể lắp theo mô-đun.
+Một instance Router là một hệ thống định tuyến và phần mềm trung gian hoàn chỉnh;
+vì lý do này, nó thường được gọi là “ứng dụng nhỏ”.
+VD:
+
+app.js
+
+var express = require('express'),
+    dogs    = require('./routes/dogs'),
+    cats    = require('./routes/cats'),
+    birds   = require('./routes/birds');
+
+var app = express();
+
+app.use('/dogs',  dogs);
+app.use('/cats',  cats);
+app.use('/birds', birds);
+
+app.listen(3000);
+
+
+
+
+dogs.js
+
+var express = require('express');
+
+var router = express.Router();
+
+router.get('/', function(req, res) {
+    res.send('GET handler for /dogs route.');
+});
+
+router.post('/', function(req, res) {
+    res.send('POST handler for /dogs route.');
+});
+
+module.exports = router;
+
+
+
+Khi var app = express()được gọi, một đối tượng ứng dụng sẽ được trả về. Hãy coi đây là ứng dụng chính .
+
+Khi var router = express.Router()được gọi, một ứng dụng nhỏ hơi khác sẽ được trả lại.
+ Ý tưởng đằng sau ứng dụng nhỏ là mỗi tuyến đường trong ứng dụng của bạn có thể trở nên khá phức tạp và bạn sẽ được lợi
+ khi chuyển tất cả mã đó vào một tệp riêng biệt. 
+Bộ định tuyến của mỗi tệp sẽ trở thành một ứng dụng nhỏ , có cấu trúc rất giống với ứng dụng chính .
+
+Trong ví dụ trên, mã cho tuyến đường / dog đã được chuyển vào tệp riêng của nó để nó không làm lộn xộn ứng dụng chính .
+ Mã cho / mèo và / chim sẽ được cấu trúc tương tự trong các tệp của riêng chúng. 
+Bằng cách tách mã này thành ba ứng dụng nhỏ ,
+ bạn có thể làm việc trên logic cho từng ứng dụng một cách riêng biệt và không phải lo lắng về cách nó sẽ ảnh hưởng đến hai ứng dụng còn lại.
+
+Nếu bạn có mã (phần mềm trung gian) liên quan đến cả ba tuyến đường, bạn có thể đặt nó vào ứng dụng chính , trước các app.use(...)cuộc gọi. 
+Nếu bạn có mã (phần mềm trung gian) chỉ liên quan đến một trong những tuyến đường đó, bạn có thể đưa nó vào tệp chỉ dành cho tuyến đường đó.

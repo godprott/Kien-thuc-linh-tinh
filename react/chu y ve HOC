@@ -1,0 +1,1 @@
+Hiện tại khi sử dụng HOC thì fai khai báo function trả về component cha (cái bao bọc) và component con (dc bao bọc) đều là class Component, nếu để func component có 1 số lỗi liên quan ( như ko thể sử dụng hook để dùng state ở component cha, hay ko thể truyền component con vào cha do con là 1 function, ... )

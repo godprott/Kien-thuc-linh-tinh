@@ -1,0 +1,46 @@
+2 cái này trong nodejs dc lấy từ nguyên tắc commonjs.
+
+trc tiên ta fai hiểu Module system:
+
+Các khối mã dc module hóa để tái sử dụng hay che dấu 1 phần code của module đó, và chỉ export cái cần
+thiết cho việc sử dụng (ví dụ chỉ export các hàm cho bên ngoài sử dụng, các biến trong đó bên ngoài ko truy cập dc),
+đồng thời việc module làm tên các biến trong các module khác nhau ko bị xung đột trùng tên.
+
+vd: 1 file như sau:
+-------------------------------
+// file math.js
+function add (a, b) {
+  return a + b;
+}
+
+module.exports = add;
+--------------------------------
+
+Để sử dụng được module math.js bên trên, chúng ta cần phải load nó vào:
+
+-----------------------------------
+// index.js
+const add = require('./math');
+const total = add(4, 5);
+console.log(total);
+------------------------------------
+
+Trong thực tế, khi node.js thực hiện require module math.js, nó sẽ viết lại (hay ta nói là bổ sung cái khung) module đó như sau:
+
+------------------------------------
+var module = { exports: {} };
+var exports = module.exports; // cái này hình như là do trình complie sử dụng, ta ko care 
+
+  function add (a, b) {
+    return a + b;
+  }
+
+  module.exports = add; // điều này giống như là:  var module = { exports: function add (... };
+
+  return module.exports; // là trả về function add (...
+
+------------------------------------
+
+Tóm lại có thể thấy kiểu dữ liệu trả về của module.exports tùy theo mình gán nó cái gì.
+trên kia có thể loằng ngoằng, ta chỉ cần hiểu đơn giản: 
+module.exports nhận giá trị cái gì, nó trả đúng cái trị cái đó khi ta require và gán nó vào biến nhận.

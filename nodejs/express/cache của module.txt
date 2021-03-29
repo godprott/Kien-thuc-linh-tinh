@@ -1,0 +1,5 @@
+khi module dc require đầu tiên, nó dc lưu vào cache, điều đó nói rằng, dù bạn có require module thêm vài lần nữa
+thì chỉ tính dữ liệu vào cache ở lần require đầu tiên ( chỉ 1 thể hiện duy nhất ).
+Nếu bạn modify data trong module đó => modify data trong cache => có require bao nhiêu lần hay sử dụng lại thì dữ liệu 
+đc modify vẫn dc lưu mà ko bị đặt về ban đầu.
+( trừ khi tắt mẹ server đi thì nó xóa hết cache r) 

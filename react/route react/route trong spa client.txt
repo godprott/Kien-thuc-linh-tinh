@@ -1,0 +1,12 @@
+nó hoạt động khác với route server ( route Server cần đúng path tuyệt đối ) với route client react thì ko, nó theo thứ tự:
+
+Nesu ta truy cập path : localhost:3000/movie/464052
+thì thứ tự sẽ như sau : nó truy cập component chứa path là / trc, rồi đến component con chứa path /movie, cuối cùng là component cháu : /movie/464052.
+Đấy là cách nó tìm thấy thằng cháu 464052
+
+Vậy nếu ta đưa ra trường hợp thằng cháu có đường dẫn là /movie/464052 mà thằng cha và ông nó ko có đường dẫn, vậy khi gõ localhost:3000/movie/464052 nó có
+render từ ông xuống cha rồi đến cháu k ? tất nhiên là éo, vì nó biết cháu ở đâu ????
+
+khi render trong trường hợp này, thằng ông dc render ( dù ko gán path nhưng / vẫn mặc định cho ông ), khi render xong ô, nó chết cứng ở đó và ko biết nên
+render thằng cha nào ( ông có 2 thằng con, 1 con có đứa chấu cần tìm, t con ko có cháu gì chả hạn, nếu đứa cha ko có cháu dc render theo mặc định, thằng cháu của thằng cha kia ko bao giờ dc xuất hiện ).
+Xem ảnh để biết thêm.

@@ -1,0 +1,9 @@
+package.json va package-lock.json:
+package.json la file chua thong tin ung dung + cac thong tin modules su dung ( cac phien ban dc khai bao la phien ban toi thieu con phien ban thuc te o file lock)
+
+
+co the cai nodemon o local folder voi --save-dev, sau do khai bao no trong script trong package.json de su dung, tu dong reset servers khi co thay doi.
+
+nodemon co the cai dat global voi -g de dung cu phap cli.
+
+--save va --save-dev khi npm install khac nhau la --save cai module dc cai se dc su dung trong ca moi truong development va production, trong khi cai kia chi la development thoi

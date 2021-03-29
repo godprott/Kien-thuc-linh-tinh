@@ -1,0 +1,26 @@
+Chú ý về import và export trong js6: khi import ra, biến đó chỉ có thể đọc.
+vd:
+//moduleA.js
+let a = 5;
+let b;
+
+export { a, b };
+
+//moduleB.js
+import { a, b } from './moduleA'
+
+a = 6; // lỗi: ReferenceError: a is not defined
+b = 1; // lỗi: ReferenceError: b is not defined
+
+ở đây các biến này ko phải là ko dc khai báo, nếu ta đọc nó như : 
+	console.log(a) // vẫn ra a = 5
+
+Lỗi này là ta can thiệp sửa đổi biến dc import nên ko dc.
+Lý do cho việc chỉ đọc là do js coi import { a, b } tương tự ta khai báo
+const a , const b    =>>>   chỉ đọc
+
+
+Nhưng với mảng (array) và đối tượng (object) vẫn có thể lách luật để sửa dc bình thường:
+vd: array.push(element);
+
+Chúng sửa dc vì chúng dc tham chiếu, vì const object, hay const array ta vẫn chỉnh sửa dc mà =)) 

@@ -1,0 +1,18 @@
+Su dung mycli tot hon mysql cli mac dinh, no goi y code tot hon
+
+Ctrl + L : xoa khung terminal
+
+show databases : xem tat ca db trong CSDL
+
+SELECT DATABASE() : xem dang su dung db nao
+
+show tables : xem list cac table trong db dang su dung
+
+describe <table> : xem cac truong va thuoc tinh cua table nao do
+
+
+
+
+
+
+

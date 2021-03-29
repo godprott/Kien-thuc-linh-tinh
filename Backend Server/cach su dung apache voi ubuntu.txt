@@ -1,0 +1,10 @@
+﻿https://ubuntu.com/tutorials/install-and-configure-apache#1-overview
+
+https://viblo.asia/p/huong-dan-thiet-lap-moi-truong-chay-ung-dung-laravel-tren-ubuntu-Qbq5Q3PmZD8
+
+
+dieu khien apache, mysql: 
+
+service apache2
+
+service mysql

@@ -1,0 +1,62 @@
+khi ta code tại sao nó lại cần chạy server
+ ( bằng npm start và chạy ở http://localhost:3000 ) sau khi tìm hiểu trên stackoverflow em có thấy câu trả lời ở đây:
+
+Node is not required in order to use React.
+ You do not need Node to run a React project.
+ React is a client side UI library.
+ What Node offers is a series of tools that allow you to be able to work with React more easily,
+ such as Webpack (gathers code into a single bundle and listens for file changes to reload this bundle to show the updated code)
+ and Babel (converts ES6 and JSX to plain JavaScript).
+ npx itself is a Node tool which allows you to run a package,
+ in this case with Create React App, which allows you to easily start a new React project.
+ The server that you see is simply to allow for the reloading of the app in response to file changes in real time.
+ The server is only for use in development.
+
+Vậy server ở đây chỉ có nhiệm vụ load lại thay đổi khi code thay đổi và biên dịch các cú pháp trình duyệt ko hiểu dc sang hiểu dc
+ (vd: từ khóa import trình duyệt ko hiểu),
+
+ nhưng khi e build nó ra thành production, mở thử file index.html ra thì trắng không,
+ xem lại thì nó lại cần 1 static server để chạy nó ???
+
+
+--------------------------------
+
+React hay Vue hay Angular, 1 khi đã build ra các file static là bạn có thể chạy được,
+ lí do bạn mở file index.html thấy màn hình trắng đơn giản là vì
+ ở file build các đoạn mà link tới file css hoặc js được mặc định dùng đường dẫn tương đối kiểu /static/css/app.css,
+ kiểu đó bạn cần có 1 webserver để chạy (nodejs, nginx) thì nó mới hiểu được.
+
+Thế ko có webserver mà vẫn muốn chạy thì làm thế nào?
+
+Đơn giản là bạn mở file index.html lên tìm và thay thế các đoạn mà link tới file css, js có tiền tố /static/ bạn đổi thành ./static là được.
+ F5 lại trình duyệt là thấy app chạy bình thường.
+
+Thế nhưng khi chạy lên, bạn có thể thấy là các file ảnh, thì không hiển thị,
+ lí do vì trong code React bạn import các file đó vào và sau quá trình build thì các đường dẫn đều ở dạng kiểu tương đối /static/media/image.svg,...
+ (mình cũng chưa tìm hiểu nhiều lắm về cơ chế build này của webpack).
+ Do vậy khi bạn chỉ mở app lên bằng file index.html thông thường thì sẽ ko thấy ảnh ọt j cả.
+
+Vậy nên khi deploy ta mới cần tới webserver để có thể serve app React (Node-Express, Python-Flask, ... hoặc nginx).
+ Bất kì webserver nào cũng đc.
+ Vấn đề quan trọng nữa nên dùng web server khi chạy app ở production là các webserver sẽ support các file static rất tốt (cache chẳng hạn),
+ nên hiệu năng sẽ tốt hơn.
+
+để làm rõ hơn câu trả lời của a (công nhận nó chưa rõ lắm 😃).
+
+Lý do tại sao cần webserver?
+
+Ở local e có thể chạy được app của e, vì e đã build sẵn ra đó, mọi thứ đã ở đó,
+ e chỉ cần kéo thả index.html vào Chrome là nó chạy, quá đơn giản 😄.
+
+Thế nhưng khi e muốn deploy app của e cho mọi người có thể dùng được,
+ thì làm cách nào để mọi người có thể dùng đc web của e hả e, họ làm j có code của e ở máy của họ mà chạy 😃.
+ E thấy lí do vì sao cần webserver chưa? 😉
+
+webserver - dịch ra đơn giản là người phục vụ nội dung web.
+ Khi e truy cập vào 1 trang web http://example.com,
+ thì phải có webserver, nó làm trách nhiệm lấy file static build từ server,
+ trả về cho client (trình duyệt của e), từ đó trình duyệt của e load các file (html, css, js) lên và chạy.
+ Đây là lí do chính ta cần tới webserver. Ngoài ra cũng có 1 số lý do nữa như a đã nói ở comment bên trên,
+ đó là các webserver họ cũng được thiết kế để có thể serve (phục vụ) các file static 1 cách tối ưu (cache, load balance,...)
+
+

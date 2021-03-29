@@ -1,0 +1,24 @@
+Trong react redux dc xử lý toàn bộ ở client.
+Với nextjs gần như thế, nó sẽ tạo tĩnh ( hay ssr ) state lần đầu tiên trong redux ( nghĩa là server sẽ tạo state lần đầu tiên )
+sau đó gửi đến client, khi này client sẽ tiếp quản state và khi thay đổi ( dispatch ) thì state này sẽ thay đổi trên client, 
+và ko gây thay đổi lại state ở server.
+
+ví dụ: nếu store redux chứa state = 5.
+ở page ta code useSelector() lấy giá trị này ra dùng, và ghi hiển thị <h1>{state này}</h1>
+thì khi bắt đầu client gửi request lấy page, server sẽ chạy tìm trong store lấy giá trị = 5 này
+ra, render tĩnh nó rồi trả về client ( nếu ta kiểm tra source code trên client ta sẽ thấy <h1>5</h1> ).
+Sau đó ở trên page nếu ta có button nhấn kích hoạt event để dispatch thay đổi lại state này từ 5 -> 6 chả hạn,
+thì điều này state thay đổi trong store ở client, với store ở server vẫn thì state vẫn = 5.
+Nếu ta có 1 page thứ 2 cx useSelector() lấy giá trị state này ra dùng, lần đầu tiên server trả page về nó sẽ trả
+về cho client state = 5 chứ ko fai = 6, nhưng khi đến client, nó lại tự dùng js để sửa lại từ 5 thành 6 cho khớp với store
+ở client.
+( Nhớ khi di chuyển page 1 sang page 2 ta dùng <Link> nếu ta gõ địa chỉ rồi enter thì nó lại thành reset app từ đầu rồi  )
+
+
+Trường hợp trên kia xảy ra khi ta triển khai redux trên nextjs giống hệt khi ta triển khai trên react.
+Với trường hợp:
+- Có thể fetch data api khởi tạo cho giá trị state store trong hàm getServerSideProps() và getStaticProps()
+
+Ta phải dùng : next-redux-wrapper
+ 
+
